@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import { CHECKOUT_URL } from '../consts';
+
+// Exit-intent (desktop): recuerda garantía y precio. Sin descuentos falsos
+// ni presión — coherente con el tono calmo de la página.
+---
+
+<div class="exit-overlay" id="exit-overlay" hidden>
+  <div class="exit-modal card" role="dialog" aria-modal="true" aria-labelledby="exit-title">
+    <button type="button" class="exit-close" id="exit-close" aria-label="Fechar">
+      <Icon name="x" size={20} />
+    </button>
+    <span class="chip chip-violet exit-chip" aria-hidden="true">
+      <Icon name="shield-check" size={26} />
+    </span>
+    <h2 id="exit-title">Antes de ir: o risco é zero</h2>
+    <p>
+      Você tem <strong>7 dias de garantia incondicional</strong>. Teste o protocolo completo
+      por R$ 247 — se não fizer sentido, um e-mail devolve cada centavo. A próxima crise não
+      avisa antes de chegar.
+    </p>
+    <a href={CHECKOUT_URL} data-checkout class="btn">Sim, quero estar preparado(a)</a>
+    <button type="button" class="exit-dismiss" id="exit-dismiss">Agora não</button>
+  </div>
+</div>
+
+<style>
+  .exit-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity var(--dur-micro) var(--ease-calm);
+  }
+  .exit-overlay.show {
+    opacity: 1;
+  }
+  .exit-modal {
+    position: relative;
+    max-width: 460px;
+    padding: clamp(28px, 5vw, 44px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-3d);
+  }
+  .exit-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-70);
+    padding: 6px;
+  }
+  .exit-chip {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+  }
+  .exit-modal h2 {
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  }
+  .exit-modal p {
+    color: var(--ink-70);
+    max-width: 42ch;
+  }
+  .exit-dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-70);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+  const overlay = document.getElementById('exit-overlay') as HTMLElement;
+  const closeBtn = document.getElementById('exit-close') as HTMLButtonElement;
+  const dismiss = document.getElementById('exit-dismiss') as HTMLButtonElement;
+  const KEY = 'sos-exit-shown';
+
+  function open() {
+    if (sessionStorage.getItem(KEY)) return;
+    sessionStorage.setItem(KEY, '1');
+    overlay.hidden = false;
+    setTimeout(() => overlay.classList.add('show'), 20);
+    (overlay.querySelector('.btn') as HTMLElement)?.focus();
+  }
+
+  function close() {
+    overlay.classList.remove('show');
+    setTimeout(() => (overlay.hidden = true), 260);
+  }
+
+  document.addEventListener('mouseout', (e) => {
+    if (!e.relatedTarget && e.clientY <= 8) open();
+  });
+  closeBtn.addEventListener('click', close);
+  dismiss.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.hidden) close();
+  });
+  overlay.querySelector('a[data-checkout]')?.addEventListener('click', close);
+</script>

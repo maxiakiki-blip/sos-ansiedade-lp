@@ -1,0 +1,101 @@
+---
+import Icon from './Icon.astro';
+
+// S12 — <details>/<summary> nativo, cero JS. El JSON-LD FAQPage vive en Layout.
+const faqs = [
+  {
+    q: 'Isso substitui terapia ou medicação?',
+    a: 'Não — e desconfie de quem prometer isso. O SOS Ansiedade é uma ferramenta de apoio para o momento da crise, complementar ao acompanhamento profissional. Muitas pessoas usam junto com a terapia.',
+  },
+  {
+    q: 'Já tentei de tudo. Por que isso seria diferente?',
+    a: 'Porque quase tudo que você tentou eram técnicas isoladas. O SOS encadeia três técnicas na ordem que o corpo precisa — primeiro o corpo, depois a mente, depois o sistema nervoso.',
+  },
+  {
+    q: 'Funciona no meu celular? Preciso instalar algo?',
+    a: 'Funciona em qualquer celular com navegador. Você adiciona à tela inicial em 1 minuto e abre com um toque, como um app.',
+  },
+  {
+    // TODO(Maxi): ajustar al tiempo real del protocolo en el app (SPEC S12).
+    q: 'Quanto tempo leva o protocolo?',
+    a: 'Menos de 5 minutos, guiado do início ao fim.',
+  },
+  {
+    q: 'Em quanto tempo recebo o acesso?',
+    a: 'Imediatamente após a compra, por e-mail, via Hotmart.',
+  },
+  {
+    q: 'E se eu não gostar?',
+    a: 'Você tem 7 dias de garantia incondicional. Pediu, recebeu de volta.',
+  },
+  {
+    q: 'É seguro comprar?',
+    a: 'Sim. O pagamento é processado pela Hotmart, maior plataforma de produtos digitais do Brasil. Aceita cartão, Pix e boleto.',
+  },
+];
+---
+
+<section class="section" aria-labelledby="faq-title">
+  <div class="container narrow faq">
+    <h2 id="faq-title" class="reveal">Perguntas frequentes</h2>
+    <div class="faq-list">
+      {
+        faqs.map((f, i) => (
+          <details class="card faq-item reveal" style={`--reveal-delay: ${Math.min(i, 3) * 100}ms`}>
+            <summary>
+              <span>{f.q}</span>
+              <Icon name="chevron-down" size={20} class="chevron" />
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq h2 {
+    text-align: center;
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .faq-item {
+    padding: 0;
+    overflow: hidden;
+  }
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 26px;
+    cursor: pointer;
+    font-weight: 650;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item :global(.chevron) {
+    flex-shrink: 0;
+    color: var(--violet);
+    transition: transform var(--dur-micro) var(--ease-calm);
+  }
+  .faq-item[open] :global(.chevron) {
+    transform: rotate(180deg);
+  }
+  .faq-item p {
+    padding: 0 26px 22px;
+    color: var(--ink-70);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item :global(.chevron) {
+      transition: none;
+    }
+  }
+</style>

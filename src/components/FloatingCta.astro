@@ -1,0 +1,91 @@
+---
+import Icon from './Icon.astro';
+import { CHECKOUT_URL } from '../consts';
+---
+
+<a href={CHECKOUT_URL} data-checkout class="floating-cta" id="floating-cta" hidden>
+  <Icon name="heart" size={18} class="floating-icon" />
+  <span>Quero começar agora</span>
+</a>
+
+<style>
+  .floating-cta {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0.9em 1.6em;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-weight: 650;
+    font-size: 0.92rem;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgb(9 27 49 / 0.3), 0 0 0 6px color-mix(in srgb, var(--violet) 18%, transparent);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur-reveal) var(--ease-calm),
+      transform var(--dur-reveal) var(--ease-calm),
+      background-color var(--dur-micro) var(--ease-calm);
+  }
+  .floating-cta.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .floating-cta:hover {
+    background: color-mix(in srgb, var(--ink) 86%, var(--violet));
+  }
+  .floating-cta :global(.floating-icon) {
+    color: var(--violet-light);
+  }
+  @media (max-width: 640px) {
+    .floating-cta {
+      right: 14px;
+      bottom: 14px;
+      font-size: 0.88rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .floating-cta {
+      transform: none;
+      transition: opacity 150ms linear;
+    }
+  }
+</style>
+
+<script>
+  const cta = document.getElementById('floating-cta') as HTMLElement;
+  const oferta = document.getElementById('oferta');
+  const hero = document.querySelector('.hero') as HTMLElement;
+
+  let pastHero = false;
+  let ofertaVisible = false;
+
+  function paint() {
+    const show = pastHero && !ofertaVisible;
+    cta.hidden = false;
+    cta.classList.toggle('visible', show);
+  }
+
+  new IntersectionObserver(
+    ([e]) => {
+      pastHero = !e.isIntersecting;
+      paint();
+    },
+    { threshold: 0 }
+  ).observe(hero);
+
+  // se esconde mientras la oferta está en pantalla: ahí ya hay CTA principal
+  if (oferta) {
+    new IntersectionObserver(
+      ([e]) => {
+        ofertaVisible = e.isIntersecting;
+        paint();
+      },
+      { threshold: 0.15 }
+    ).observe(oferta);
+  }
+</script>

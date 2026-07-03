@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="section" aria-labelledby="garantia-title">
+  <div class="container narrow garantia">
+    <div class="garantia-icon reveal" aria-hidden="true">
+      <Icon name="shield-check" size={56} class="shield" />
+    </div>
+    <h2 id="garantia-title" class="reveal" style="--reveal-delay: 100ms">
+      O risco é meu, não seu
+    </h2>
+    <p class="reveal" style="--reveal-delay: 200ms">
+      Teste o SOS Ansiedade por 7 dias completos. Se não fizer sentido para você — por
+      qualquer motivo — devolvemos cada centavo. Sem perguntas, sem burocracia. Um e-mail
+      resolve.
+    </p>
+  </div>
+</section>
+
+<style>
+  .garantia {
+    text-align: center;
+  }
+  .garantia p {
+    margin-inline: auto;
+    max-width: 54ch;
+  }
+  .garantia-icon {
+    display: inline-flex;
+    padding: 22px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--violet) 14%, transparent);
+    margin-bottom: 24px;
+  }
+  .garantia-icon :global(.shield) {
+    color: var(--violet);
+  }
+  .garantia h2 {
+    margin-bottom: 18px;
+  }
+</style>

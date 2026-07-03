@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+
+// S3 — Los tres sistemas van en una sola línea tipográfica, no en cards:
+// las cards numeradas quedan reservadas para S5, donde el orden significa algo.
+const sistemas = [
+  { icon: 'wind', label: 'Corpo', detail: 'hiperventilação' },
+  { icon: 'brain', label: 'Mente', detail: 'pensamentos catastróficos' },
+  { icon: 'activity', label: 'Sistema nervoso', detail: 'estado de alerta' },
+];
+---
+
+<section class="section" aria-labelledby="causa-title">
+  <div class="container narrow causa">
+    <h2 id="causa-title" class="reveal">Por que “respira fundo” nunca funcionou para você</h2>
+    <p class="reveal" style="--reveal-delay: 100ms">
+      Você já tentou respirar fundo. Já tentou “pensar em outra coisa”. E na hora H, nada
+      disso segurou a crise. Não é culpa sua — é matemática: a ansiedade dispara em três
+      sistemas ao mesmo tempo, e uma técnica isolada ataca só um deles.
+    </p>
+    <ul class="sistemas reveal" style="--reveal-delay: 200ms" role="list">
+      {
+        sistemas.map((s) => (
+          <li>
+            <Icon name={s.icon} size={26} class="sistema-icon" />
+            <span class="sistema-label">{s.label}</span>
+            <span class="sistema-detail">{s.detail}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="causa-fechamento reveal" style="--reveal-delay: 300ms">
+      Para desligar o alarme, você precisa dos três — <strong>na ordem certa.</strong>
+    </p>
+  </div>
+</section>
+
+<style>
+  .causa {
+    text-align: center;
+  }
+  .causa h2 {
+    margin-bottom: clamp(20px, 3vw, 32px);
+  }
+  .causa p {
+    margin-inline: auto;
+    max-width: 60ch;
+  }
+  .sistemas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(20px, 4vw, 48px);
+    margin-block: clamp(32px, 5vw, 48px);
+    padding: 0;
+    list-style: none;
+  }
+  .sistemas li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 150px;
+  }
+  .sistemas :global(.sistema-icon) {
+    color: var(--violet);
+    margin-bottom: 4px;
+  }
+  .sistema-label {
+    font-weight: 650;
+  }
+  .sistema-detail {
+    font-size: 0.9rem;
+    color: var(--ink-70);
+  }
+  .causa-fechamento {
+    font-size: 1.15em;
+  }
+</style>

@@ -1,0 +1,218 @@
+---
+import '../styles/global.css';
+import { CHECKOUT_URL, META_PIXEL_ID } from '../consts';
+
+const title = 'SOS Ansiedade — o app para o momento da crise de ansiedade';
+const description =
+  'Aprenda como acalmar a ansiedade no momento da crise: o protocolo guiado de 3 passos (respiração, grounding e borboleta) no seu celular, a um toque.';
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://sos-ansiedade.vercel.app');
+const ogImage = new URL('/og.jpg', canonical);
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Isso substitui terapia ou medicação?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Não — e desconfie de quem prometer isso. O SOS Ansiedade é uma ferramenta de apoio para o momento da crise, complementar ao acompanhamento profissional. Muitas pessoas usam junto com a terapia.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Já tentei de tudo. Por que isso seria diferente?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Porque quase tudo que você tentou eram técnicas isoladas. O SOS encadeia três técnicas na ordem que o corpo precisa — primeiro o corpo, depois a mente, depois o sistema nervoso.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Funciona no meu celular? Preciso instalar algo?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Funciona em qualquer celular com navegador. Você adiciona à tela inicial em 1 minuto e abre com um toque, como um app.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Quanto tempo leva o protocolo?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Menos de 5 minutos, guiado do início ao fim.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Em quanto tempo recebo o acesso?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Imediatamente após a compra, por e-mail, via Hotmart.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'E se eu não gostar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Você tem 7 dias de garantia incondicional. Pediu, recebeu de volta.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'É seguro comprar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sim. O pagamento é processado pela Hotmart, maior plataforma de produtos digitais do Brasil. Aceita cartão, Pix e boleto.',
+      },
+    },
+  ],
+};
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'SOS Ansiedade',
+  description,
+  image: ogImage.toString(),
+  brand: { '@type': 'Brand', name: 'SOS Ansiedade' },
+  offers: {
+    '@type': 'Offer',
+    price: '247.00',
+    priceCurrency: 'BRL',
+    availability: 'https://schema.org/InStock',
+    url: CHECKOUT_URL,
+  },
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#FCF8F2" />
+
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/hanken-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+  </head>
+  <body>
+    <slot />
+
+    <!-- Scroll reveals: IntersectionObserver, una sola vez, fallback universal -->
+    <script>
+      const els = document.querySelectorAll('.reveal');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+
+    <!-- Tracking: Meta Pixel (diferido, jamás bloquea render) + UTMs → Hotmart -->
+    <script define:vars={{ META_PIXEL_ID }}>
+      // ⚠️ Pixel NUEVO para SOS Ansiedade — NO usar 641071370521487 (Inquilino Online).
+      if (META_PIXEL_ID) {
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = '2.0';
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        window.fbq('init', META_PIXEL_ID);
+        window.fbq('track', 'PageView');
+      }
+
+      const track = (event, params) => {
+        if (window.fbq) window.fbq('track', event, params || {});
+      };
+
+      // ViewContent al alcanzar 50% de scroll (una sola vez)
+      let vcFired = false;
+      const onScroll = () => {
+        if (vcFired) return;
+        const doc = document.documentElement;
+        const progress = (window.scrollY + window.innerHeight) / doc.scrollHeight;
+        if (progress >= 0.5) {
+          vcFired = true;
+          track('ViewContent', { content_name: 'SOS Ansiedade' });
+          window.removeEventListener('scroll', onScroll);
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Propagación de UTMs (+ sck/src/xcod de Hotmart) al checkout
+      const incoming = new URLSearchParams(window.location.search);
+      const forwarded = new URLSearchParams();
+      for (const [key, value] of incoming) {
+        if (key.startsWith('utm_') || key === 'src' || key === 'sck' || key === 'xcod') {
+          forwarded.append(key, value);
+        }
+      }
+      const checkoutLinks = document.querySelectorAll('a[data-checkout]');
+      checkoutLinks.forEach((a) => {
+        if ([...forwarded.keys()].length) {
+          const url = new URL(a.href);
+          forwarded.forEach((v, k) => url.searchParams.set(k, v));
+          a.href = url.toString();
+        }
+        // InitiateCheckout en cada click de CTA hacia Hotmart
+        a.addEventListener('click', () => {
+          track('InitiateCheckout', { value: 247, currency: 'BRL' });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,375 @@
+---
+// S4 — Breathing Widget: el elemento signature. Réplica funcional del paso 1
+// del app (Respiração Tática, caixa de 4s). Sin autoplay: el control lo tiene
+// el usuario.
+---
+
+<section class="section breathing wash" id="respire" aria-labelledby="respire-title">
+  <div class="container narrow breath-wrap">
+    <h2 id="respire-title" class="reveal">Sinta a diferença agora — antes de decidir qualquer coisa</h2>
+    <p class="breath-instrucao reveal" style="--reveal-delay: 100ms">
+      Toque em começar e siga o círculo por 30 segundos. Inspire quando ele crescer. Solte o
+      ar quando ele encolher.
+    </p>
+
+    <div class="breath-widget card card-3d reveal" style="--reveal-delay: 200ms">
+      <div class="breath-ciclos" aria-hidden="true">
+        <span class="breath-ciclos-label">Ciclos</span>
+        <div class="breath-dots" id="breath-dots">
+          <span>1</span><span>2</span><span>3</span><span>4</span>
+        </div>
+      </div>
+
+      <div class="breath-stage" id="breath-stage">
+        <div class="breath-ring breath-ring-1" aria-hidden="true"></div>
+        <div class="breath-ring breath-ring-2" aria-hidden="true"></div>
+        <button type="button" class="breath-circle" id="breath-circle" aria-label="Círculo de respiração — toque para pausar ou continuar">
+          <span class="breath-label" id="breath-label" aria-live="polite">Pronto?</span>
+          <span class="breath-count" id="breath-count" aria-hidden="true">&nbsp;</span>
+          <span class="breath-hint" id="breath-hint">toque em começar</span>
+        </button>
+      </div>
+
+      <div class="breath-fases" id="breath-fases" aria-hidden="true">
+        <span data-fase="0">Inspirar<em>4 seg</em></span>
+        <span data-fase="1">Segurar<em>4 seg</em></span>
+        <span data-fase="2">Soltar<em>4 seg</em></span>
+        <span data-fase="3">Reter<em>4 seg</em></span>
+      </div>
+
+      <div class="breath-controls">
+        <button type="button" class="btn" id="breath-toggle">Começar</button>
+      </div>
+      <p class="microcopy breath-pausa-hint" id="breath-pausa-hint" hidden>
+        Toque no círculo para pausar
+      </p>
+    </div>
+
+    <div class="breath-post" id="breath-post" hidden>
+      <p>
+        O que você acabou de sentir é só o passo 1 de 3. <strong>Imagine o protocolo
+        completo, te guiando na hora da crise.</strong>
+      </p>
+      <a href="#protocolo" class="breath-post-link">Conhecer o protocolo completo ↓</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .breathing {
+    /* respiro extra: es el momento de pausa de la página */
+    padding-block: clamp(72px, 12vw, 150px);
+  }
+  .breath-wrap {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .breath-instrucao {
+    color: var(--ink-70);
+    max-width: 46ch;
+    margin-top: 16px;
+  }
+  .breath-widget {
+    margin-top: clamp(28px, 4vw, 44px);
+    padding: clamp(24px, 4vw, 40px);
+    width: min(100%, 560px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .breath-ciclos {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    align-self: stretch;
+    justify-content: center;
+  }
+  .breath-ciclos-label {
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+  }
+  .breath-dots {
+    display: flex;
+    gap: 10px;
+  }
+  .breath-dots span {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    color: var(--ink-70);
+    font-size: 0.82rem;
+    font-weight: 650;
+    transition: all var(--dur-micro) var(--ease-calm);
+  }
+  .breath-dots span.active {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .breath-dots span.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .breath-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(64vw, 280px);
+    height: min(64vw, 280px);
+    margin-top: 10px;
+  }
+  .breath-ring {
+    position: absolute;
+    width: min(46vw, 200px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, var(--blue) 35%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .breath-stage.running .breath-ring {
+    animation: ripple 4s var(--ease-calm) infinite;
+  }
+  .breath-stage.running .breath-ring-2 {
+    animation-delay: 2s;
+  }
+  @keyframes ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(1.55);
+      opacity: 0;
+    }
+  }
+  .breath-circle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: min(46vw, 200px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 7px solid color-mix(in srgb, #ffffff 92%, transparent);
+    background: radial-gradient(circle at 32% 26%, #7db8f5 0%, var(--blue) 58%, #3372c4 100%);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 18px 50px color-mix(in srgb, var(--blue) 40%, transparent),
+      0 0 0 10px color-mix(in srgb, var(--blue) 8%, transparent);
+    transition-property: transform, box-shadow;
+    transition-timing-function: var(--ease-calm);
+    will-change: transform;
+  }
+  .breath-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .breath-count {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 620;
+    font-size: 2.6rem;
+    line-height: 1;
+    min-height: 1em;
+  }
+  .breath-hint {
+    font-size: 0.68rem;
+    opacity: 0.85;
+  }
+  .breath-fases {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: clamp(20px, 3vw, 30px);
+  }
+  .breath-fases span {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 16px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    color: var(--ink-70);
+    font-size: 0.8rem;
+    font-weight: 650;
+    transition: all var(--dur-micro) var(--ease-calm);
+  }
+  .breath-fases span em {
+    font-style: normal;
+    font-size: 0.68rem;
+    font-weight: 500;
+  }
+  .breath-fases span.active {
+    background: var(--green);
+    color: #fff;
+  }
+  .breath-controls {
+    margin-top: clamp(20px, 3vw, 28px);
+  }
+  .breath-pausa-hint {
+    margin-top: 12px;
+  }
+  .breath-post {
+    margin-top: clamp(32px, 5vw, 48px);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--dur-reveal) var(--ease-calm),
+      transform var(--dur-reveal) var(--ease-calm);
+  }
+  .breath-post.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .breath-post p {
+    max-width: 50ch;
+  }
+  .breath-post-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--ink);
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--violet);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .breath-circle {
+      /* la función se preserva; el movimiento se minimiza (pulso de opacidad) */
+      transition-property: opacity, box-shadow;
+    }
+    .breath-stage.running .breath-ring {
+      animation: none;
+    }
+    .breath-post {
+      transform: none;
+      transition: opacity 150ms linear;
+    }
+  }
+</style>
+
+<script>
+  // Timing del paso 1 del app real: Respiração Tática, caixa de 4s.
+  const PHASES = [
+    { label: 'Inspire', hint: 'enchendo os pulmões', dur: 4, scale: 1.3, opacity: 1 },
+    { label: 'Segure', hint: 'pulmões cheios', dur: 4, scale: 1.3, opacity: 1 },
+    { label: 'Solte o ar', hint: 'esvaziando devagar', dur: 4, scale: 1, opacity: 0.7 },
+    { label: 'Retenha', hint: 'pulmões vazios', dur: 4, scale: 1, opacity: 0.7 },
+  ];
+  const CYCLES_TO_MESSAGE = 2; // 2 ciclos ≈ 32s ("siga o círculo por 30 segundos")
+
+  const stage = document.getElementById('breath-stage') as HTMLElement;
+  const circle = document.getElementById('breath-circle') as HTMLButtonElement;
+  const label = document.getElementById('breath-label') as HTMLElement;
+  const count = document.getElementById('breath-count') as HTMLElement;
+  const hint = document.getElementById('breath-hint') as HTMLElement;
+  const toggle = document.getElementById('breath-toggle') as HTMLButtonElement;
+  const dots = document.querySelectorAll<HTMLElement>('#breath-dots span');
+  const fases = document.querySelectorAll<HTMLElement>('#breath-fases span');
+  const pausaHint = document.getElementById('breath-pausa-hint') as HTMLElement;
+  const post = document.getElementById('breath-post') as HTMLElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let running = false;
+  let phase = 0;
+  let cycles = 0;
+  let phaseTimer: ReturnType<typeof setTimeout> | null = null;
+  let tick: ReturnType<typeof setInterval> | null = null;
+  let messageShown = false;
+
+  function paintDots() {
+    dots.forEach((d, i) => {
+      d.classList.toggle('done', i < Math.min(cycles, 4));
+      d.classList.toggle('active', running && i === Math.min(cycles, 3));
+    });
+  }
+
+  function applyPhase(p: (typeof PHASES)[number]) {
+    circle.style.transitionDuration = `${p.dur * 1000}ms`;
+    if (reduced) {
+      circle.style.opacity = String(p.opacity);
+    } else {
+      circle.style.transform = `scale(${p.scale})`;
+    }
+  }
+
+  function runPhase(i: number) {
+    phase = i;
+    const p = PHASES[i];
+    label.textContent = p.label;
+    hint.textContent = p.hint;
+    applyPhase(p);
+
+    let remaining = p.dur;
+    count.textContent = String(remaining);
+    if (tick) clearInterval(tick);
+    tick = setInterval(() => {
+      remaining -= 1;
+      if (remaining > 0) count.textContent = String(remaining);
+    }, 1000);
+
+    phaseTimer = setTimeout(() => {
+      const next = (i + 1) % PHASES.length;
+      if (next === 0) {
+        cycles += 1;
+        paintDots();
+        if (cycles >= CYCLES_TO_MESSAGE && !messageShown) {
+          messageShown = true;
+          post.hidden = false;
+          setTimeout(() => post.classList.add('show'), 30);
+        }
+      }
+      if (running) {
+        fases.forEach((f) => f.classList.toggle('active', Number(f.dataset.fase) === next));
+        runPhase(next);
+      }
+    }, p.dur * 1000);
+  }
+
+  function pause() {
+    running = false;
+    if (phaseTimer) clearTimeout(phaseTimer);
+    if (tick) clearInterval(tick);
+    const current = getComputedStyle(circle);
+    circle.style.transitionDuration = '0ms';
+    circle.style.transform = current.transform === 'none' ? '' : current.transform;
+    circle.style.opacity = current.opacity;
+    label.textContent = 'Pausado';
+    hint.textContent = 'toque para continuar';
+    count.textContent = ' ';
+    stage.classList.remove('running');
+    toggle.textContent = 'Continuar';
+    pausaHint.hidden = true;
+    paintDots();
+  }
+
+  function start() {
+    running = true;
+    stage.classList.add('running');
+    toggle.textContent = 'Pausar';
+    pausaHint.hidden = false;
+    fases.forEach((f) => f.classList.toggle('active', Number(f.dataset.fase) === phase));
+    paintDots();
+    runPhase(phase);
+  }
+
+  const flip = () => (running ? pause() : start());
+  toggle.addEventListener('click', flip);
+  circle.addEventListener('click', () => {
+    // el círculo solo pausa/reanuda una vez iniciado (sin autoplay accidental)
+    if (running || toggle.textContent === 'Continuar') flip();
+  });
+</script>

@@ -1,0 +1,381 @@
+@import "tailwindcss";
+
+/* ---------- Fuentes (self-hosted, variable, latin + latin-ext) ---------- */
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/fraunces-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/fraunces-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/hanken-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/hanken-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Fallbacks con métricas ajustadas (scripts/fallback-metrics.mjs):
+   el swap de fuente no mueve el layout → CLS 0 */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Georgia");
+  size-adjust: 110.96%;
+  ascent-override: 88.14%;
+  descent-override: 22.98%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Hanken Fallback";
+  src: local("Arial");
+  size-adjust: 103.25%;
+  ascent-override: 96.86%;
+  descent-override: 29.35%;
+  line-gap-override: 0%;
+}
+
+/* ---------- Tokens ---------- */
+@theme {
+  --color-bg: #fcf8f2;
+  --color-surface: #ffffff;
+  --color-ink: #091b31;
+  --color-violet: #c784d2;
+  --color-violet-light: #a292f9;
+  --color-red: #ef4444;
+  --font-display: "Fraunces", "Fraunces Fallback", Georgia, serif;
+  --font-body: "Hanken Grotesk", "Hanken Fallback", Arial, system-ui, sans-serif;
+}
+
+:root {
+  --bg: #fcf8f2;
+  --surface: #ffffff;
+  --ink: #091b31;
+  --ink-70: color-mix(in srgb, var(--ink) 70%, transparent);
+  --violet: #c784d2;
+  --violet-light: #a292f9;
+  --red: #ef4444;
+  /* acentos secundarios del app (Respiração azul, Grounding verde, streak/motivação naranja) */
+  --blue: #4a90e2;
+  --green: #2fb583;
+  --orange: #f59e0b;
+
+  --radius: 20px;
+  --shadow: 0 8px 30px rgb(9 27 49 / 0.08);
+  --shadow-3d: 0 2px 6px rgb(9 27 49 / 0.06), 0 14px 34px rgb(9 27 49 / 0.1),
+    0 30px 60px rgb(162 146 249 / 0.12);
+
+  --ease-calm: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --dur-micro: 250ms;
+  --dur-reveal: 700ms;
+  --dur-ambient: 10s;
+
+  --text-h1: clamp(2.2rem, 6vw, 4rem);
+  --text-h2: clamp(1.7rem, 4vw, 2.6rem);
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+h1,
+h2 {
+  font-family: var(--font-display);
+  /* eje óptico alto + SOFT alto: letra literalmente más redondeada */
+  font-variation-settings: "opsz" 144, "SOFT" 90;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+h1 {
+  font-size: var(--text-h1);
+}
+h2 {
+  font-size: var(--text-h2);
+}
+p {
+  max-width: 65ch;
+}
+
+/* ---------- Layout ---------- */
+.section {
+  padding-block: clamp(64px, 11vw, 140px);
+}
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 32px);
+}
+.narrow {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+/* ---------- Componentes base ---------- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.45em 1.1em;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--violet) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--violet) 30%, transparent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 1.05em 2.4em;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 650;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-calm),
+    box-shadow var(--dur-micro) var(--ease-calm),
+    background-color var(--dur-micro) var(--ease-calm);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--ink) 86%, var(--violet));
+  box-shadow: 0 12px 34px rgb(9 27 49 / 0.18);
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--violet-light);
+  outline-offset: 3px;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+.btn-outline:hover {
+  background: color-mix(in srgb, var(--violet) 10%, transparent);
+  color: var(--ink);
+}
+
+.microcopy {
+  font-size: 0.85rem;
+  color: var(--ink-70);
+}
+
+/* ---------- Scroll reveals (una sola vez, solo transform+opacity) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--dur-reveal) var(--ease-calm),
+    transform var(--dur-reveal) var(--ease-calm);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ---------- Ambient: el único movimiento autónomo de la página ---------- */
+.ambient {
+  position: absolute;
+  top: -15%;
+  right: -10%;
+  width: min(70vw, 900px);
+  aspect-ratio: 1.4;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--violet-light) 55%, transparent) 0%,
+    color-mix(in srgb, var(--violet) 40%, transparent) 40%,
+    transparent 70%
+  );
+  /* sin filter: blur — el propio gradiente radial hace el difuminado,
+     sin costo de rasterización (budget TBT/INP) */
+  opacity: 0.25;
+  animation: breathe var(--dur-ambient) var(--ease-calm) infinite;
+  will-change: transform;
+}
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* ---------- Chips de icono coloreados (lenguaje visual del app) ---------- */
+.chip {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.chip-violet {
+  background: linear-gradient(135deg, var(--violet-light), var(--violet));
+}
+.chip-blue {
+  background: linear-gradient(135deg, #6aaef2, var(--blue));
+}
+.chip-green {
+  background: linear-gradient(135deg, #4ecf9d, var(--green));
+}
+.chip-orange {
+  background: linear-gradient(135deg, #fbbf4d, var(--orange));
+}
+.chip-red {
+  background: linear-gradient(135deg, #f87171, var(--red));
+}
+.chip-ink {
+  background: linear-gradient(135deg, #1e3a5f, var(--ink));
+}
+
+/* ---------- Presencia 3D (cards clave) ---------- */
+.card-3d {
+  box-shadow: var(--shadow-3d);
+  border: 1px solid color-mix(in srgb, var(--violet) 18%, transparent);
+  transition: transform var(--dur-micro) var(--ease-calm),
+    box-shadow var(--dur-micro) var(--ease-calm);
+}
+.card-3d:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 4px 10px rgb(9 27 49 / 0.07), 0 22px 44px rgb(9 27 49 / 0.13),
+    0 40px 80px rgb(162 146 249 / 0.18);
+}
+
+/* Flotación suave para chips decorativos (lenta, orgánica) */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+.floaty {
+  animation: floaty 7s var(--ease-calm) infinite;
+}
+.floaty-late {
+  animation: floaty 8s var(--ease-calm) 1.6s infinite;
+}
+
+/* Lavado de fondo suave para alternar secciones */
+.wash {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--violet-light) 7%, var(--bg)) 30%,
+    color-mix(in srgb, var(--violet) 8%, var(--bg)) 70%,
+    transparent 100%
+  );
+}
+
+/* Blob atmosférico estático (máx. 2–3 secciones, opacidad ≤ 20%) */
+.blob {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.16;
+  background: radial-gradient(
+    circle,
+    var(--violet-light) 0%,
+    var(--violet) 40%,
+    transparent 68%
+  );
+}
+
+/* ---------- prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .ambient {
+    animation: none;
+  }
+  .reveal {
+    transform: none;
+  }
+  .reveal.is-visible {
+    transition: opacity 150ms linear;
+    transition-delay: 0ms;
+  }
+  .btn,
+  .btn:hover,
+  .btn:active {
+    transform: none;
+  }
+  .floaty,
+  .floaty-late {
+    animation: none;
+  }
+  .card-3d:hover {
+    transform: none;
+  }
+}

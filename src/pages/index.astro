@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Espelho from '../components/Espelho.astro';
+import Causa from '../components/Causa.astro';
+import Breathing from '../components/Breathing.astro';
+import Protocolo from '../components/Protocolo.astro';
+import AppAcao from '../components/AppAcao.astro';
+import Oferta from '../components/Oferta.astro';
+import Garantia from '../components/Garantia.astro';
+import Familiares from '../components/Familiares.astro';
+import Faq from '../components/Faq.astro';
+import Fechamento from '../components/Fechamento.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCta from '../components/FloatingCta.astro';
+import SocialProof from '../components/SocialProof.astro';
+import ExitPopup from '../components/ExitPopup.astro';
+// S7 y S8 quedan fuera de la v1 (sin historia real ni testimonios reales aún):
+// import Historia from '../components/Historia.astro';
+// import Prova from '../components/Prova.astro';
+---
+
+<Layout>
+  <main>
+    <Hero />
+    <Espelho />
+    <Causa />
+    <Breathing />
+    <Protocolo />
+    <AppAcao />
+    {/* S7 — activar cuando Maxi pase su historia real: <Historia /> */}
+    {/* S8 — activar cuando haya depoimentos reales: <Prova /> */}
+    <Oferta />
+    <Garantia />
+    <Familiares />
+    <Faq />
+    <Fechamento />
+  </main>
+  <Footer />
+  <FloatingCta />
+  <SocialProof />
+  <ExitPopup />
+</Layout>

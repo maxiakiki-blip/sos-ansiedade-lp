@@ -1,0 +1,272 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import { CHECKOUT_URL } from '../consts';
+import appScreen from '../assets/app-screen.jpg';
+
+const incluido = [
+  'Botão SOS de resgate: protocolo guiado de 3 passos a um toque',
+  'Respiração Tática — guia visual interativo (ciclos de 4s)',
+  'Conexão Sensorial 5-4-3-2-1 — aterramento passo a passo',
+  'Abraço de Borboleta (EMDR) — ritmo guiado na tela',
+  'Modo Prevenção: Acupressão 7 Pontos + Sons Calmantes',
+  'Caixa de Preocupações + Dose de Motivação',
+  'Registro de humor, níveis, XP e sequência de dias',
+  'Atualizações incluídas — pagamento único, sem mensalidade',
+];
+
+const bonus = [
+  { icon: 'play', chip: 'chip-red', titulo: 'Bônus 1: Vídeo “SOS Completo”', valor: 'R$ 67' },
+  { icon: 'podcast', chip: 'chip-orange', titulo: 'Bônus 2: Podcast “Como desarmar o alarme da ansiedade”', valor: 'R$ 47' },
+  { icon: 'book-open', chip: 'chip-green', titulo: 'Bônus 3: “Guia Avançado de Prevenção e Atração da Calma” — PDF interativo', valor: 'R$ 86' },
+];
+
+const selos = [
+  { icon: 'mail-check', texto: 'Acesso imediato por e-mail' },
+  { icon: 'lock', texto: 'Compra processada pela Hotmart' },
+  { icon: 'shield-check', texto: 'Garantia incondicional de 7 dias' },
+  { icon: 'credit-card', texto: 'Cartão, Pix ou boleto' },
+];
+---
+
+<section class="section oferta-section" id="oferta" aria-labelledby="oferta-title">
+  <div class="blob oferta-blob" aria-hidden="true"></div>
+  <div class="container oferta">
+    <h2 id="oferta-title" class="reveal">Tudo o que você recebe hoje</h2>
+
+    <div class="stack">
+      <article class="card app-card reveal">
+        <div class="app-card-mockup">
+          <div class="mini-phone">
+            <Picture
+              src={appScreen}
+              formats={['avif', 'webp']}
+              alt="App SOS Ansiedade"
+              widths={[240, 360]}
+              sizes="180px"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <div class="app-card-body">
+          <h3>App SOS Ansiedade</h3>
+          <p>
+            O protocolo guiado de 3 passos — Respiração, Grounding e Borboleta — no seu
+            celular, pronto para o momento da crise. E tudo isto:
+          </p>
+          <ul class="incluido" role="list">
+            {
+              incluido.map((item) => (
+                <li>
+                  <Icon name="check" size={17} class="check-icon" />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <span class="valor-ancla">Valor: R$ 297</span>
+        </div>
+      </article>
+
+      <div class="bonus-grid">
+        {
+          bonus.map((b, i) => (
+            <article class="card card-3d bonus-card reveal" style={`--reveal-delay: ${(i + 1) * 100}ms`}>
+              <span class={`chip ${b.chip}`}>
+                <Icon name={b.icon} size={24} />
+              </span>
+              <h3>{b.titulo}</h3>
+              <span class="valor-ancla">Valor: {b.valor}</span>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="preco reveal">
+      <p class="preco-total">
+        Valor total: <s class="preco-tachado">R$ 497</s>
+      </p>
+      <p class="preco-hoje">
+        Hoje: <span class="preco-num">R$ 247</span>
+      </p>
+      <!-- TODO(Maxi): valor exacto de la cuota 12x — tomarlo del checkout de
+           Hotmart, NO calcularlo (SPEC S1/S9). Reemplazar la línea de abajo por
+           "ou 12x de R$ XX,XX no cartão" cuando lo tengas. -->
+      <p class="preco-parcela">ou em até 12x no cartão</p>
+      <a href={CHECKOUT_URL} data-checkout class="btn preco-cta">Quero começar agora</a>
+    </div>
+
+    <ul class="selos reveal" role="list">
+      {
+        selos.map((s) => (
+          <li>
+            <Icon name={s.icon} size={20} class="selo-icon" />
+            <span>{s.texto}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .oferta-section {
+    position: relative;
+    overflow: hidden;
+  }
+  .oferta-blob {
+    width: 620px;
+    height: 620px;
+    top: -160px;
+    right: -220px;
+  }
+  .oferta {
+    position: relative;
+    text-align: center;
+  }
+  .oferta h2 {
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .stack {
+    display: grid;
+    gap: clamp(16px, 2.5vw, 24px);
+    max-width: 940px;
+    margin-inline: auto;
+  }
+  @media (min-width: 860px) {
+    .stack {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: stretch;
+    }
+  }
+  .app-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: clamp(28px, 4vw, 40px);
+  }
+  .mini-phone {
+    width: 170px;
+    border: 7px solid var(--ink);
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  .mini-phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 23px;
+  }
+  .app-card-body h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .app-card-body p {
+    color: var(--ink-70);
+    max-width: 40ch;
+    margin-inline: auto;
+  }
+  .incluido {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    text-align: left;
+  }
+  .incluido li {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: var(--ink-70);
+  }
+  .incluido :global(.check-icon) {
+    color: var(--green);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .bonus-grid {
+    display: grid;
+    gap: clamp(16px, 2.5vw, 24px);
+  }
+  .bonus-card {
+    padding: clamp(20px, 3vw, 28px);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .bonus-card :global(.chip) {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+  .bonus-card h3 {
+    font-size: 1.02rem;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+  .valor-ancla {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-70);
+  }
+  .preco {
+    margin-top: clamp(44px, 7vw, 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .preco-total {
+    color: var(--ink-70);
+  }
+  .preco-tachado {
+    /* único uso del rojo en toda la página; oscurecido con navy para pasar AA 4.5:1 */
+    color: color-mix(in srgb, var(--red) 82%, var(--ink));
+    text-decoration-thickness: 2px;
+  }
+  .preco-hoje {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 620;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.1;
+  }
+  .preco-parcela {
+    color: var(--ink-70);
+  }
+  .preco-cta {
+    margin-top: 22px;
+    font-size: 1.05rem;
+  }
+  .selos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px 32px;
+    margin-top: clamp(32px, 5vw, 44px);
+    padding: 0;
+    list-style: none;
+  }
+  .selos li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--ink-70);
+  }
+  .selos :global(.selo-icon) {
+    color: var(--violet);
+    flex-shrink: 0;
+  }
+</style>

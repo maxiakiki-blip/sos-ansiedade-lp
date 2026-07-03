@@ -1,0 +1,42 @@
+---
+import { SUPPORT_EMAIL } from '../consts';
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="disclaimer">
+      O SOS Ansiedade é uma ferramenta de apoio ao bem-estar e não substitui diagnóstico,
+      tratamento médico ou psicológico. Em caso de crise grave ou pensamentos de
+      autoagressão, ligue <strong>188</strong> (CVV — Centro de Valorização da Vida, 24
+      horas) ou procure um serviço de emergência.
+    </p>
+    <p class="footer-meta">
+      Suporte: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> · Pagamentos
+      processados por Hotmart · <a href="#">Termos</a> · <a href="#">Privacidade</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    padding-block: 40px 48px;
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+  }
+  .footer p {
+    font-size: 0.82rem;
+    color: var(--ink-70);
+    max-width: 78ch;
+  }
+  .footer a {
+    color: var(--ink-70);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

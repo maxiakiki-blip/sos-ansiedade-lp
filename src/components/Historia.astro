@@ -1,0 +1,35 @@
+---
+// S7 — Historia (origin story). PENDIENTE: historia real de Maxi en 1ª persona,
+// 120–180 palabras. Estructura: primeira crise → tudo o que tentou e falhou →
+// a descoberta do encadeamento das 3 técnicas → hoje.
+// PROHIBIDO inventar contenido acá (SPEC S7 + sección 12.5).
+// Cuando Maxi pase la historia: reemplazar el párrafo marcado y activar la
+// sección en src/pages/index.astro.
+// Foto real solo si existe — nunca stock de personas.
+---
+
+<section class="section" aria-labelledby="historia-title">
+  <div class="container narrow historia">
+    <h2 id="historia-title" class="reveal">Quem criou isso já esteve onde você está</h2>
+    <div class="historia-copy reveal" style="--reveal-delay: 100ms">
+      <p>
+        [PLACEHOLDER — historia real de Maxi. NO PUBLICAR esta sección hasta reemplazar
+        este texto.]
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .historia {
+    text-align: center;
+  }
+  .historia h2 {
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+  .historia-copy p {
+    margin-inline: auto;
+    max-width: 58ch;
+    font-size: 1.1em;
+  }
+</style>

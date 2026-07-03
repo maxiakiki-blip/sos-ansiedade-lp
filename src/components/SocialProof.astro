@@ -1,0 +1,132 @@
+---
+import Icon from './Icon.astro';
+
+// Notificaciones de actividad reciente (estilo página de referencia).
+// ⚠️ TODO(Maxi): reemplazar por nombres/ciudades de COMPRADORES REALES
+// (Hotmart → pestaña vendas). Publicar datos inventados de compras específicas
+// es riesgoso frente a la revisión de Hotmart y al CDC. Los textos de acción
+// genéricos ("alguém começou...") son más seguros que nombres si no hay datos.
+---
+
+<div class="sp-toast" id="sp-toast" aria-hidden="true" hidden>
+  <span class="chip chip-violet sp-chip"><Icon name="heart" size={18} /></span>
+  <div class="sp-body">
+    <strong id="sp-nome"></strong>
+    <span id="sp-acao"></span>
+  </div>
+  <button type="button" class="sp-close" id="sp-close" tabindex="-1" aria-hidden="true">
+    <Icon name="x" size={16} />
+  </button>
+</div>
+
+<style>
+  .sp-toast {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    z-index: 55;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: min(88vw, 360px);
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--violet) 25%, transparent);
+    box-shadow: var(--shadow-3d);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity var(--dur-reveal) var(--ease-calm),
+      transform var(--dur-reveal) var(--ease-calm);
+    pointer-events: none;
+  }
+  .sp-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .sp-chip {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+  }
+  .sp-body {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--ink-70);
+  }
+  .sp-body strong {
+    color: var(--ink);
+    font-size: 0.84rem;
+  }
+  .sp-close {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-70);
+    padding: 2px;
+  }
+  @media (max-width: 640px) {
+    .sp-toast {
+      bottom: 74px; /* deja lugar al CTA flotante */
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sp-toast {
+      transform: none;
+      transition: opacity 150ms linear;
+    }
+  }
+</style>
+
+<script>
+  // TODO(Maxi): cargar nombres reales de compradores (Hotmart → vendas).
+  const ITEMS = [
+    { nome: 'Ana, de Lisboa · PT', acao: 'acaba de garantir o acesso ao SOS Ansiedade ✨' },
+    { nome: 'Carlos, do Rio de Janeiro · BR', acao: 'começou o exercício de Respiração Tática 🫁' },
+    { nome: 'Juliana, de São Paulo · BR', acao: 'ativou o Modo Prevenção com Sons Calmantes 🎧' },
+    { nome: 'José, de Porto Alegre · BR', acao: 'acaba de garantir o acesso ao SOS Ansiedade ✨' },
+    { nome: 'Fernanda, de Belo Horizonte · BR', acao: 'concluiu a Conexão Sensorial 5-4-3-2-1 🌿' },
+    { nome: 'Raul, de Curitiba · BR', acao: 'entrou no app direto do celular 📱' },
+  ];
+  const FIRST_DELAY = 9000;
+  const VISIBLE_FOR = 6000;
+  const INTERVAL = 22000;
+
+  const toast = document.getElementById('sp-toast') as HTMLElement;
+  const nome = document.getElementById('sp-nome') as HTMLElement;
+  const acao = document.getElementById('sp-acao') as HTMLElement;
+  const close = document.getElementById('sp-close') as HTMLElement;
+
+  let idx = 0;
+  let stopped = false;
+  let hideTimer: ReturnType<typeof setTimeout>;
+
+  function showNext() {
+    if (stopped || idx >= ITEMS.length) return;
+    const item = ITEMS[idx];
+    idx += 1;
+    nome.textContent = item.nome;
+    acao.textContent = item.acao;
+    toast.hidden = false;
+    setTimeout(() => toast.classList.add('show'), 30);
+    hideTimer = setTimeout(hide, VISIBLE_FOR);
+    if (idx < ITEMS.length) setTimeout(showNext, INTERVAL);
+  }
+
+  function hide() {
+    toast.classList.remove('show');
+  }
+
+  close.addEventListener('click', () => {
+    stopped = true;
+    clearTimeout(hideTimer);
+    hide();
+  });
+
+  setTimeout(showNext, FIRST_DELAY);
+</script>

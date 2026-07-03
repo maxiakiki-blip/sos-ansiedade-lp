@@ -1,0 +1,203 @@
+---
+import Icon from './Icon.astro';
+
+// S6 — App en acción + tour completo de lo que hay dentro (info real del app:
+// capturas + página de ventas actual).
+// TODO(Maxi): ¿funciona offline? Solo afirmarlo si es real (SPEC S6).
+const celdas = [
+  {
+    icon: 'navigation',
+    chip: 'chip-violet',
+    titulo: 'Te guia passo a passo',
+    copy: 'Com tempos e instruções na tela, para você não precisar lembrar de nada no meio da crise.',
+  },
+  {
+    icon: 'smartphone',
+    chip: 'chip-blue',
+    titulo: 'Na tela inicial do seu celular',
+    copy: 'Instalação em 1 minuto, sem loja de aplicativos. Acesso de 1 toque.',
+  },
+  {
+    icon: 'moon',
+    chip: 'chip-ink',
+    titulo: 'Feito para o pior momento',
+    copy: 'Às 3h da manhã, no ônibus, antes da reunião. Interface simples de propósito.',
+  },
+  {
+    icon: 'eye-off',
+    chip: 'chip-green',
+    titulo: 'Discreto',
+    copy: 'Ninguém ao redor percebe que você está usando.',
+  },
+];
+
+const modulos = [
+  {
+    icon: 'wind',
+    chip: 'chip-blue',
+    titulo: 'Respiração Tática',
+    copy: 'Guia visual interativo em ciclos de 4 segundos, com contador e pausa a um toque.',
+  },
+  {
+    icon: 'hand',
+    chip: 'chip-green',
+    titulo: 'Conexão Sensorial 5-4-3-2-1',
+    copy: 'O método de aterramento passo a passo, interativo: ver, sentir, ouvir, cheirar, saborear.',
+  },
+  {
+    icon: 'heart',
+    chip: 'chip-violet',
+    titulo: 'Abraço de Borboleta (EMDR)',
+    copy: 'Estimulação bilateral com ritmo guiado na tela, ombro a ombro.',
+  },
+  {
+    icon: 'music',
+    chip: 'chip-blue',
+    titulo: 'Sons Calmantes',
+    copy: 'Oceano, chuva suave, floresta, tigela tibetana e ruído rosa para acalmar o sistema nervoso.',
+  },
+  {
+    icon: 'flame',
+    chip: 'chip-red',
+    titulo: 'Caixa de Preocupações',
+    copy: 'Escreva o que te pesa e queime. Seu cérebro recebe um sinal de liberação e alívio.',
+  },
+  {
+    icon: 'sparkles',
+    chip: 'chip-orange',
+    titulo: 'Dose de Motivação',
+    copy: 'Reenquadramentos cognitivos positivos para fortalecer sua mente todos os dias.',
+  },
+  {
+    icon: 'activity',
+    chip: 'chip-green',
+    titulo: 'Acupressão · 7 Pontos',
+    copy: 'Guia anatômico ilustrado, ponto a ponto, com movimentos cronometrados de 30 segundos.',
+  },
+  {
+    icon: 'trending-up',
+    chip: 'chip-orange',
+    titulo: 'Humor, XP e sequência',
+    copy: 'Registre seu humor diário, suba de nível e mantenha a sequência — a calma vira hábito.',
+  },
+];
+---
+
+<section class="section" aria-labelledby="app-title">
+  <div class="container app-acao">
+    <h2 id="app-title" class="reveal">Um toque. O protocolo começa.</h2>
+    <div class="bento">
+      {
+        celdas.map((c, i) => (
+          <article class="card card-3d celda reveal" style={`--reveal-delay: ${i * 100}ms`}>
+            <span class={`chip ${c.chip}`}>
+              <Icon name={c.icon} size={26} />
+            </span>
+            <h3>{c.titulo}</h3>
+            <p>{c.copy}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <h3 class="modulos-title reveal">E quando não há crise, o app previne a próxima</h3>
+    <p class="modulos-sub reveal">
+      Modo Prevenção completo: a prática diária fortalece o sistema parassimpático e reduz
+      os picos de ansiedade.
+    </p>
+    <div class="modulos">
+      {
+        modulos.map((m, i) => (
+          <article class="card modulo reveal" style={`--reveal-delay: ${(i % 4) * 100}ms`}>
+            <span class={`chip ${m.chip}`}>
+              <Icon name={m.icon} size={24} />
+            </span>
+            <div>
+              <h4>{m.titulo}</h4>
+              <p>{m.copy}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .app-acao {
+    text-align: center;
+  }
+  .app-acao h2 {
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .bento {
+    display: grid;
+    gap: clamp(16px, 2.5vw, 24px);
+    max-width: 880px;
+    margin-inline: auto;
+  }
+  @media (min-width: 720px) {
+    .bento {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .celda {
+    padding: clamp(24px, 4vw, 36px);
+    text-align: left;
+  }
+  .celda :global(.chip) {
+    margin-bottom: 14px;
+  }
+  .celda h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .celda p {
+    color: var(--ink-70);
+  }
+  .modulos-title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 600;
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    margin-top: clamp(56px, 9vw, 90px);
+  }
+  .modulos-sub {
+    color: var(--ink-70);
+    max-width: 52ch;
+    margin: 14px auto clamp(28px, 4vw, 40px);
+  }
+  .modulos {
+    display: grid;
+    gap: clamp(12px, 2vw, 18px);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+  @media (min-width: 640px) {
+    .modulos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .modulo {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: clamp(18px, 3vw, 24px);
+    text-align: left;
+  }
+  .modulo :global(.chip) {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+  .modulo h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .modulo p {
+    font-size: 0.92rem;
+    color: var(--ink-70);
+  }
+</style>

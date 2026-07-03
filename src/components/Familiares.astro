@@ -1,0 +1,34 @@
+---
+import { CHECKOUT_URL } from '../consts';
+---
+
+<section class="section familiares-section" aria-labelledby="familiares-title">
+  <div class="container narrow familiares">
+    <h2 id="familiares-title" class="reveal">
+      Você não tem crises — mas ama alguém que tem?
+    </h2>
+    <p class="reveal" style="--reveal-delay: 100ms">
+      Ver alguém que você ama passar por uma crise de ansiedade sem saber como ajudar é uma das
+      piores sensações que existem. O SOS Ansiedade também é para você: entenda o que
+      acontece no corpo dessa pessoa, saiba o que fazer durante a crise, e dê de presente uma
+      ferramenta que ela pode usar quando você não estiver por perto.
+    </p>
+    <a href={CHECKOUT_URL} data-checkout class="btn btn-outline reveal" style="--reveal-delay: 200ms">
+      Quero ajudar quem eu amo
+    </a>
+  </div>
+</section>
+
+<style>
+  .familiares {
+    text-align: center;
+  }
+  .familiares h2 {
+    margin-bottom: 18px;
+  }
+  .familiares p {
+    margin-inline: auto;
+    max-width: 58ch;
+    margin-bottom: clamp(28px, 4vw, 36px);
+  }
+</style>

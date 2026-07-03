@@ -1,0 +1,70 @@
+---
+// S8 — Prova social. OMITIDA en v1: no hay testimonios reales todavía.
+// PROHIBIDO inventar depoimentos o usar "ejemplos ilustrativos" (SPEC S8).
+// Cuando existan 3–6 depoimentos reales (nombre de pila + edad o ciudad,
+// texto corto y específico — situación concreta > elogio genérico):
+//   1. Cargarlos en el array `depoimentos` de abajo.
+//   2. Activar la sección en src/pages/index.astro.
+// Video > texto si existe.
+
+type Depoimento = { nome: string; onde: string; texto: string };
+const depoimentos: Depoimento[] = [
+  // { nome: 'Nome', onde: 'idade ou cidade', texto: 'Depoimento real...' },
+];
+---
+
+{
+  depoimentos.length > 0 && (
+    <section class="section" aria-labelledby="prova-title">
+      <div class="container prova">
+        <h2 id="prova-title" class="reveal">
+          Quem já usa o protocolo
+        </h2>
+        <div class="depoimentos">
+          {depoimentos.map((d, i) => (
+            <figure class="card depoimento reveal" style={`--reveal-delay: ${i * 100}ms`}>
+              <blockquote>
+                <p>“{d.texto}”</p>
+              </blockquote>
+              <figcaption>
+                <strong>{d.nome}</strong> · {d.onde}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .prova {
+    text-align: center;
+  }
+  .prova h2 {
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .depoimentos {
+    display: grid;
+    gap: clamp(16px, 2.5vw, 24px);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+  @media (min-width: 720px) {
+    .depoimentos {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+  .depoimento {
+    padding: clamp(24px, 4vw, 32px);
+    text-align: left;
+  }
+  .depoimento blockquote p {
+    color: var(--ink);
+  }
+  .depoimento figcaption {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: var(--ink-70);
+  }
+</style>

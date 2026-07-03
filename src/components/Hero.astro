@@ -1,0 +1,186 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import appScreen from '../assets/app-screen.jpg';
+---
+
+<section class="hero" aria-label="SOS Ansiedade">
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Protocolo de 3 passos · Respiração → Grounding → Borboleta</p>
+      <h1>Quando a próxima crise chegar, você vai saber exatamente o que fazer.</h1>
+      <p class="hero-sub">
+        O SOS Ansiedade é o aplicativo que te guia pelo protocolo de 3 passos — baseado em
+        técnicas de TCC e EMDR — no momento exato em que a ansiedade aparece. No seu bolso,
+        a um toque.
+      </p>
+      <a href="#oferta" class="btn">Quero estar preparado(a)</a>
+      <p class="microcopy hero-micro">
+        Acesso imediato · Garantia de 7 dias · Compra segura via Hotmart
+      </p>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-scene">
+        <div class="phone-halo" aria-hidden="true"></div>
+        <div class="phone">
+          <Picture
+            src={appScreen}
+            formats={['avif', 'webp']}
+            alt="Tela inicial do app SOS Ansiedade com o botão S.O.S para iniciar o protocolo de resgate"
+            widths={[320, 480, 640]}
+            sizes="(max-width: 1024px) 280px, 340px"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="hero-chip hero-chip-xp floaty" aria-hidden="true">
+          <span class="chip chip-violet chip-sm"><Icon name="award" size={18} /></span>
+          <span><strong>Mestre Zen</strong><br />níveis e XP</span>
+        </div>
+        <div class="hero-chip hero-chip-streak floaty-late" aria-hidden="true">
+          <span class="chip chip-orange chip-sm"><Icon name="flame" size={18} /></span>
+          <span><strong>Sequência de dias</strong><br />calma que vira hábito</span>
+        </div>
+        <div class="hero-chip hero-chip-sos floaty" aria-hidden="true">
+          <span class="chip chip-blue chip-sm"><Icon name="timer" size={18} /></span>
+          <span><strong>Resgate guiado</strong><br />em menos de 5 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(40px, 7vw, 110px);
+  }
+  .hero-grid {
+    position: relative;
+    display: grid;
+    gap: clamp(48px, 6vw, 72px);
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(18px, 2.5vw, 28px);
+  }
+  .hero-sub {
+    color: var(--ink-70);
+    max-width: 54ch;
+  }
+  .hero-micro {
+    margin-top: -6px;
+  }
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+  }
+  .phone-scene {
+    position: relative;
+  }
+  .phone-halo {
+    position: absolute;
+    inset: -14%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--violet-light) 40%, transparent) 0%,
+      color-mix(in srgb, var(--violet) 25%, transparent) 45%,
+      transparent 70%
+    );
+    z-index: -1;
+  }
+  .phone {
+    width: min(72vw, 300px);
+    border: 10px solid var(--ink);
+    border-radius: 44px;
+    overflow: hidden;
+    background: var(--ink);
+    box-shadow: 0 24px 60px rgb(9 27 49 / 0.24), 0 44px 110px rgb(162 146 249 / 0.28);
+    transform: rotate(2deg);
+  }
+  @media (min-width: 1024px) {
+    .phone {
+      width: 340px;
+    }
+  }
+  .phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 34px;
+  }
+  .hero-chip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 10px 10px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--violet) 25%, transparent);
+    box-shadow: var(--shadow);
+    font-size: 0.74rem;
+    line-height: 1.35;
+    color: var(--ink-70);
+    white-space: nowrap;
+  }
+  .hero-chip strong {
+    color: var(--ink);
+    font-size: 0.8rem;
+  }
+  .hero-chip :global(.chip-sm) {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+  .hero-chip-xp {
+    top: 6%;
+    left: -22%;
+  }
+  .hero-chip-streak {
+    top: 38%;
+    right: -24%;
+  }
+  .hero-chip-sos {
+    bottom: 7%;
+    left: -18%;
+  }
+  @media (max-width: 1023px) {
+    .hero-chip-xp {
+      left: -6%;
+    }
+    .hero-chip-streak {
+      right: -6%;
+    }
+    .hero-chip-sos {
+      left: -4%;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero-chip {
+      font-size: 0.68rem;
+      padding: 8px 12px 8px 8px;
+    }
+    .hero-chip-xp {
+      left: -2%;
+    }
+    .hero-chip-streak {
+      right: -2%;
+    }
+    .hero-chip-sos {
+      left: 0;
+    }
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+import Icon from './Icon.astro';
+
+// S5 — La numeración 01/02/03 se justifica: el orden es real y fijo.
+// Los colores replican el lenguaje del app: Respiração azul, Grounding verde,
+// Borboleta violeta.
+const passos = [
+  {
+    num: '01',
+    titulo: 'Respiração Tática',
+    tag: 'base: TCC',
+    dato: 'caixa de 4 segundos',
+    chip: 'chip-blue',
+    icon: 'wind',
+    copy:
+      'Desacelera o corpo. A respiração guiada em ciclos de 4 segundos reduz a hiperventilação e manda ao cérebro o primeiro sinal de segurança.',
+  },
+  {
+    num: '02',
+    titulo: 'Conexão Sensorial',
+    tag: 'base: TCC',
+    dato: 'método 5-4-3-2-1',
+    chip: 'chip-green',
+    icon: 'hand',
+    copy:
+      'Interrompe o loop mental. A técnica de aterramento 5-4-3-2-1 tira o foco dos pensamentos catastróficos e traz você de volta ao presente.',
+  },
+  {
+    num: '03',
+    titulo: 'Abraço de Borboleta',
+    tag: 'base: EMDR',
+    dato: 'ritmo guiado na tela',
+    chip: 'chip-violet',
+    icon: 'heart',
+    copy:
+      'Regula o sistema nervoso. O abraço da borboleta, usado em protocolos de EMDR, é guiado toque a toque pelo app para o corpo sair do estado de alerta.',
+  },
+];
+---
+
+<section class="section" id="protocolo" aria-labelledby="protocolo-title">
+  <div class="container protocolo">
+    <h2 id="protocolo-title" class="reveal">
+      O protocolo de 3 passos, na ordem que o seu corpo precisa
+    </h2>
+    <div class="passos">
+      {
+        passos.map((p, i) => (
+          <>
+            {i > 0 && <div class="conector" aria-hidden="true" />}
+            <article class="card card-3d passo reveal" style={`--reveal-delay: ${i * 100}ms`}>
+              <div class="passo-left">
+                <span class={`chip ${p.chip}`}>
+                  <Icon name={p.icon} size={26} />
+                </span>
+                <span class="passo-num" aria-hidden="true">
+                  {p.num}
+                </span>
+              </div>
+              <div class="passo-body">
+                <header class="passo-header">
+                  <h3>{p.titulo}</h3>
+                  <span class="passo-tag">{p.tag}</span>
+                  <span class="passo-dato">{p.dato}</span>
+                </header>
+                <p>{p.copy}</p>
+              </div>
+            </article>
+          </>
+        ))
+      }
+    </div>
+    <p class="protocolo-nota reveal">
+      A ordem não é aleatória: cada passo prepara o terreno para o próximo. É por isso que o
+      protocolo encadeado funciona onde técnicas soltas falham.
+    </p>
+  </div>
+</section>
+
+<style>
+  .protocolo {
+    text-align: center;
+  }
+  .protocolo h2 {
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .passos {
+    max-width: 660px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .conector {
+    width: 2px;
+    height: 44px;
+    margin-inline: auto;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--violet) 60%, transparent),
+      var(--violet)
+    );
+    border-radius: 9999px;
+  }
+  .passo {
+    display: flex;
+    gap: clamp(18px, 3vw, 28px);
+    align-items: flex-start;
+    padding: clamp(24px, 4vw, 36px);
+    text-align: left;
+  }
+  .passo-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .passo-num {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1;
+    /* violeta oscurecido con navy: mantiene la marca y pasa contraste AA */
+    color: color-mix(in srgb, var(--violet) 45%, var(--ink));
+  }
+  .passo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .passo h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .passo-tag {
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3em 0.9em;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--violet) 16%, transparent);
+    color: var(--ink);
+  }
+  .passo-dato {
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3em 0.9em;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--blue) 14%, transparent);
+    color: color-mix(in srgb, var(--blue) 60%, var(--ink));
+  }
+  .passo p {
+    color: var(--ink-70);
+  }
+  .protocolo-nota {
+    margin: clamp(36px, 6vw, 56px) auto 0;
+    max-width: 56ch;
+    font-weight: 500;
+  }
+</style>
