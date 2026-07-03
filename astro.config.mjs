@@ -8,7 +8,7 @@ export default defineConfig({
     // CSS inline: elimina el request render-blocking (budget LCP < 2.0s)
     inlineStylesheets: 'always',
   },
-  site: 'https://sos-ansiedade.vercel.app', // TODO: dominio final
+  site: 'https://sos-ansiedade-lp.vercel.app', // TODO: reemplazar cuando haya dominio propio
   vite: {
     plugins: [tailwindcss()],
   },
