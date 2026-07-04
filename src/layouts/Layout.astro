@@ -126,6 +126,36 @@ const productJsonLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+
+    <!-- Meta Pixel — SOS Ansiedade (NO usar 641071370521487, es de Inquilino Online) -->
+    <script define:vars={{ META_PIXEL_ID }}>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', META_PIXEL_ID);
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+      />
+    </noscript>
   </head>
   <body>
     <slot />
@@ -151,47 +181,28 @@ const productJsonLd = {
       }
     </script>
 
-    <!-- Tracking: Meta Pixel (diferido, jamás bloquea render) + UTMs → Hotmart -->
-    <script define:vars={{ META_PIXEL_ID }}>
-      // ⚠️ Pixel NUEVO para SOS Ansiedade — NO usar 641071370521487 (Inquilino Online).
-      if (META_PIXEL_ID) {
-        !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = !0;
-          n.version = '2.0';
-          n.queue = [];
-          t = b.createElement(e);
-          t.async = !0;
-          t.src = v;
-          s = b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t, s);
-        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        window.fbq('init', META_PIXEL_ID);
-        window.fbq('track', 'PageView');
-      }
-
+    <!-- Tracking: eventos do Meta Pixel + propagación de UTMs → Hotmart -->
+    <script>
       const track = (event, params) => {
         if (window.fbq) window.fbq('track', event, params || {});
       };
 
-      // ViewContent al alcanzar 50% de scroll (una sola vez)
-      let vcFired = false;
-      const onScroll = () => {
-        if (vcFired) return;
-        const doc = document.documentElement;
-        const progress = (window.scrollY + window.innerHeight) / doc.scrollHeight;
-        if (progress >= 0.5) {
-          vcFired = true;
-          track('ViewContent', { content_name: 'SOS Ansiedade' });
-          window.removeEventListener('scroll', onScroll);
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
+      // ViewContent apenas a seção de oferta (#oferta) entra na tela (uma vez)
+      const oferta = document.getElementById('oferta');
+      if (oferta) {
+        const vcObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                track('ViewContent', { content_name: 'SOS Ansiedade' });
+                vcObserver.disconnect();
+              }
+            }
+          },
+          { threshold: 0.1 }
+        );
+        vcObserver.observe(oferta);
+      }
 
       // Propagación de UTMs (+ sck/src/xcod de Hotmart) al checkout
       const incoming = new URLSearchParams(window.location.search);
@@ -210,7 +221,7 @@ const productJsonLd = {
         }
         // InitiateCheckout en cada click de CTA hacia Hotmart
         a.addEventListener('click', () => {
-          track('InitiateCheckout', { value: 247, currency: 'BRL' });
+          track('InitiateCheckout', { content_name: 'SOS Ansiedade' });
         });
       });
     </script>

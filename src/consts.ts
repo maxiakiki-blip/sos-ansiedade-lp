@@ -1,7 +1,6 @@
 export const CHECKOUT_URL = 'https://pay.hotmart.com/L106226605F';
 
-// ⚠️ Pixel NUEVO de SOS Ansiedade — NO usar 641071370521487 (Inquilino Online).
-// TODO(Maxi): pegar acá el ID del pixel de Meta cuando esté creado.
-export const META_PIXEL_ID = '';
+// Pixel de SOS Ansiedade (nuevo, no el 641071370521487 de Inquilino Online).
+export const META_PIXEL_ID = '1054129317181548';
 
 export const SUPPORT_EMAIL = 'maxiakiki@hotmail.com';
