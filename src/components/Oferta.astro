@@ -4,15 +4,19 @@ import Icon from './Icon.astro';
 import { CHECKOUT_URL } from '../consts';
 import appScreen from '../assets/app-screen.jpg';
 
+// Mismo par ícone/color que AppAcao.astro (modulos) para que el checklist se
+// lea como continuación visual de esa sección, no como una lista genérica.
 const incluido = [
-  'Botão SOS de resgate: protocolo guiado de 3 passos a um toque',
-  'Respiração Tática — guia visual interativo (ciclos de 4s)',
-  'Conexão Sensorial 5-4-3-2-1 — aterramento passo a passo',
-  'Abraço de Borboleta (EMDR) — ritmo guiado na tela',
-  'Modo Prevenção: Acupressão 7 Pontos + Sons Calmantes',
-  'Caixa de Preocupações + Dose de Motivação',
-  'Registro de humor, níveis, XP e sequência de dias',
-  'Atualizações incluídas — pagamento único, sem mensalidade',
+  { icon: 'timer', chip: 'chip-violet', texto: 'Botão SOS de resgate — protocolo guiado a um toque' },
+  { icon: 'wind', chip: 'chip-blue', texto: 'Respiração Tática — guia visual interativo (ciclos de 4s)' },
+  { icon: 'hand', chip: 'chip-green', texto: 'Conexão Sensorial 5-4-3-2-1 — aterramento passo a passo' },
+  { icon: 'heart', chip: 'chip-violet', texto: 'Abraço de Borboleta (EMDR) — ritmo guiado na tela' },
+  { icon: 'activity', chip: 'chip-green', texto: 'Acupressão · 7 Pontos — guia anatômico ilustrado' },
+  { icon: 'music', chip: 'chip-blue', texto: 'Sons Calmantes — 5 frequências antiestresse' },
+  { icon: 'flame', chip: 'chip-red', texto: 'Caixa de Preocupações — escreva e queime' },
+  { icon: 'sparkles', chip: 'chip-orange', texto: 'Dose de Motivação — reenquadramentos diários' },
+  { icon: 'trending-up', chip: 'chip-orange', texto: 'Registro de humor, níveis, XP e sequência' },
+  { icon: 'award', chip: 'chip-ink', texto: 'Atualizações incluídas — pagamento único, sem mensalidade' },
 ];
 
 const bonus = [
@@ -58,8 +62,10 @@ const selos = [
             {
               incluido.map((item) => (
                 <li>
-                  <Icon name="check" size={17} class="check-icon" />
-                  <span>{item}</span>
+                  <span class={`chip ${item.chip}`}>
+                    <Icon name={item.icon} size={17} />
+                  </span>
+                  <span>{item.texto}</span>
                 </li>
               ))
             }
@@ -83,13 +89,18 @@ const selos = [
       </div>
     </div>
 
-    <div class="preco reveal">
+    <div class="preco-card card card-3d reveal">
+      <div class="preco-halo" aria-hidden="true"></div>
       <p class="preco-total">
         Valor total: <s class="preco-tachado">R$ 497</s>
       </p>
       <p class="preco-hoje">
         Hoje: <span class="preco-num">R$ 247</span>
       </p>
+      <span class="preco-economia">
+        <Icon name="sparkles" size={15} />
+        Você economiza R$ 250
+      </span>
       <!-- TODO(Maxi): valor exacto de la cuota 12x — tomarlo del checkout de
            Hotmart, NO calcularlo (SPEC S1/S9). Reemplazar la línea de abajo por
            "ou 12x de R$ XX,XX no cartão" cuando lo tengas. -->
@@ -162,35 +173,43 @@ const selos = [
     border-radius: 23px;
   }
   .app-card-body h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 600;
+    font-size: 1.4rem;
     margin-bottom: 8px;
   }
   .app-card-body p {
     color: var(--ink-70);
-    max-width: 40ch;
+    max-width: 42ch;
     margin-inline: auto;
   }
   .incluido {
     list-style: none;
     padding: 0;
-    margin: 18px 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
+    margin: 20px 0 0;
+    display: grid;
+    gap: 10px;
     text-align: left;
+  }
+  @media (min-width: 560px) {
+    .incluido {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .incluido li {
     display: flex;
-    gap: 9px;
-    align-items: flex-start;
-    font-size: 0.9rem;
-    color: var(--ink-70);
+    gap: 11px;
+    align-items: center;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--ink);
   }
-  .incluido :global(.check-icon) {
-    color: var(--green);
+  .incluido :global(.chip) {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
     flex-shrink: 0;
-    margin-top: 3px;
   }
   .bonus-grid {
     display: grid;
@@ -210,24 +229,51 @@ const selos = [
     border-radius: 14px;
   }
   .bonus-card h3 {
-    font-size: 1.02rem;
-    font-weight: 650;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 90;
+    font-weight: 600;
+    font-size: 1.08rem;
     line-height: 1.4;
   }
   .valor-ancla {
-    display: inline-block;
+    display: inline-flex;
     margin-top: 6px;
-    font-size: 0.82rem;
+    padding: 0.3em 0.85em;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+    font-size: 0.78rem;
+    font-weight: 650;
     color: var(--ink-70);
   }
-  .preco {
-    margin-top: clamp(44px, 7vw, 64px);
+  .preco-card {
+    position: relative;
+    overflow: hidden;
+    margin: clamp(44px, 7vw, 64px) auto 0;
+    max-width: 480px;
+    padding: clamp(36px, 6vw, 56px) clamp(24px, 5vw, 40px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    border: 1px solid color-mix(in srgb, var(--violet) 22%, transparent);
+  }
+  .preco-halo {
+    position: absolute;
+    top: -35%;
+    left: 50%;
+    translate: -50% 0;
+    width: 340px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--violet-light) 45%, transparent) 0%,
+      transparent 68%
+    );
+    pointer-events: none;
   }
   .preco-total {
+    position: relative;
     color: var(--ink-70);
   }
   .preco-tachado {
@@ -236,18 +282,36 @@ const selos = [
     text-decoration-thickness: 2px;
   }
   .preco-hoje {
+    position: relative;
     font-family: var(--font-display);
     font-variation-settings: 'opsz' 144, 'SOFT' 90;
     font-weight: 620;
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-size: clamp(2.6rem, 7vw, 3.8rem);
     line-height: 1.1;
   }
+  .preco-economia {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    padding: 0.4em 1em;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--green) 14%, transparent);
+    color: color-mix(in srgb, var(--green) 55%, var(--ink));
+    font-size: 0.82rem;
+    font-weight: 650;
+  }
   .preco-parcela {
+    position: relative;
+    margin-top: 8px;
     color: var(--ink-70);
   }
   .preco-cta {
-    margin-top: 22px;
+    position: relative;
+    margin-top: 20px;
     font-size: 1.05rem;
+    width: 100%;
   }
   .selos {
     display: flex;

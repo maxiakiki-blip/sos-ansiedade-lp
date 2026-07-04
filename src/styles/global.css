@@ -175,6 +175,9 @@ p {
   color: var(--ink);
 }
 
+/* Botones con presencia 3D tipo "keycap": borde inferior sólido que simula
+   espesor + sombra ambiental + brillo superior. Se aplana al presionar
+   (simula que el botón se hunde), consistente con el círculo SOS del app. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -182,7 +185,11 @@ p {
   gap: 0.6em;
   padding: 1.05em 2.4em;
   border-radius: 9999px;
-  background: var(--ink);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ink) 88%, white) 0%,
+    var(--ink) 100%
+  );
   color: var(--bg);
   font-weight: 650;
   font-size: 1rem;
@@ -190,17 +197,30 @@ p {
   text-decoration: none;
   border: none;
   cursor: pointer;
+  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.18),
+    0 4px 0 color-mix(in srgb, var(--ink) 65%, black),
+    0 16px 32px rgb(9 27 49 / 0.26);
   transition: transform var(--dur-micro) var(--ease-calm),
     box-shadow var(--dur-micro) var(--ease-calm),
-    background-color var(--dur-micro) var(--ease-calm);
+    background var(--dur-micro) var(--ease-calm);
 }
 .btn:hover {
-  transform: translateY(-2px);
-  background: color-mix(in srgb, var(--ink) 86%, var(--violet));
-  box-shadow: 0 12px 34px rgb(9 27 49 / 0.18);
+  transform: translateY(-3px);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ink) 78%, var(--violet)) 0%,
+    color-mix(in srgb, var(--ink) 68%, var(--violet)) 100%
+  );
+  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.22),
+    0 6px 0 color-mix(in srgb, var(--ink) 65%, black),
+    0 22px 44px rgb(9 27 49 / 0.32),
+    0 0 0 8px color-mix(in srgb, var(--violet) 14%, transparent);
 }
 .btn:active {
-  transform: scale(0.98);
+  transform: translateY(1px);
+  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.14),
+    0 1px 0 color-mix(in srgb, var(--ink) 65%, black),
+    0 8px 18px rgb(9 27 49 / 0.24);
 }
 .btn:focus-visible,
 a:focus-visible,
@@ -211,13 +231,22 @@ summary:focus-visible {
 }
 
 .btn-outline {
-  background: transparent;
+  background: var(--surface);
   color: var(--ink);
-  border: 1.5px solid var(--ink);
+  border: 2px solid var(--ink);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--ink) 14%, transparent),
+    0 14px 28px rgb(9 27 49 / 0.1);
 }
 .btn-outline:hover {
-  background: color-mix(in srgb, var(--violet) 10%, transparent);
-  color: var(--ink);
+  background: color-mix(in srgb, var(--violet) 8%, var(--surface));
+  border-color: color-mix(in srgb, var(--violet) 55%, var(--ink));
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--violet) 35%, transparent),
+    0 20px 36px rgb(162 146 249 / 0.24);
+}
+.btn-outline:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--violet) 35%, transparent),
+    0 8px 18px rgb(162 146 249 / 0.18);
 }
 
 .microcopy {
